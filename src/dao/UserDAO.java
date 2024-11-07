@@ -413,6 +413,7 @@ public class UserDAO extends connectToDatabase {
 
     public void addGame(int ID) {
         try {
+            System.out.println("__addgame___"+ID);
             PreparedStatement preparedStatement = con.prepareStatement("UPDATE user\n"
                     + "SET user.NumberOfGame = ?\n"
                     + "WHERE user.ID = ?");

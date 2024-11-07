@@ -262,6 +262,7 @@ public class ServerThread implements Runnable {
                                     this.room = serverThread.getRoom();
                                     room.setUser2(this);
                                     room.increaseNumberOfGame();
+                                    System.out.println("--1--");
                                     this.userDAO.updateToPlaying(this.user.getID());
                                     goToPartnerRoom();
                                 } else {
@@ -339,6 +340,7 @@ public class ServerThread implements Runnable {
                             serverThread.room.setUser2(this);
                             this.room = serverThread.room;
                             room.increaseNumberOfGame();
+                            System.out.println("--2--");
                             System.out.println("Đã vào phòng " + room.getId());
                             goToPartnerRoom();
                             userDAO.updateToPlaying(this.user.getID());
@@ -364,8 +366,6 @@ public class ServerThread implements Runnable {
                     int scoreUser1 = this.room.getScoreUser1();
                     int scoreUser2 = this.room.getScoreUser2();
                     if(scoreUser1!=-1 && scoreUser2!=-1 && this.room.isSendResult()==false){
-                        userDAO.addGame(this.room.getUser1().getUser().getID());
-                        userDAO.addGame(this.room.getUser2().getUser().getID());
                         this.room.setSendResult(true);
                         if(scoreUser1 > scoreUser2){
                             userDAO.addWinGame(this.room.getUser1().getUser().getID());
@@ -433,6 +433,7 @@ public class ServerThread implements Runnable {
                             this.room = serverThread.room;
                             System.out.println("Đã vào phòng " + room.getId());
                             room.increaseNumberOfGame();
+                            System.out.println("--3--");
                             goToPartnerRoom();
                             userDAO.updateToPlaying(this.user.getID());
                             break;
@@ -462,6 +463,7 @@ public class ServerThread implements Runnable {
                     room.setUser2(user2);
                     user2.setRoom(room);
                     room.increaseNumberOfGame();
+                    System.out.println("--4--");
                     goToOwnRoom();
                     userDAO.updateToPlaying(this.user.getID());
                 }
@@ -474,12 +476,7 @@ public class ServerThread implements Runnable {
                 if (messageSplit[0].equals("chat")) {
                     room.getCompetitor(clientNumber).write(message);
                 }
-                if (messageSplit[0].equals("win")) {
-                    userDAO.addWinGame(this.user.getID());
-                    room.increaseNumberOfGame();
-                    room.getCompetitor(clientNumber).write("caro," + messageSplit[1] + "," + messageSplit[2]);
-                    room.boardCast("new-game,");
-                }
+                
                 
                 if (messageSplit[0].equals("left-room")) {
                     if (room != null) {
